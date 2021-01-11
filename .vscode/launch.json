@@ -16,7 +16,7 @@
             "name": "Chrome JS debug",
             "request": "launch",
             "type": "chrome",
-            "file": "${workspaceFolder}/js.html",
+            "file": "${workspaceFolder}/index.html",
             "preLaunchTask": "JS debug"
         },
         {

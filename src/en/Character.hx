@@ -26,7 +26,7 @@ class Character extends Entity {
         origin = {x: (x + Main.ME.scene.width * .5) / 2, y: y};
         center = {x: Main.ME.scene.width * .5, y: Main.ME.scene.height * .25};
         direction = (origin.x - center.x < 0) ? 1 : -1;
-        state = CHARGING;
+        state = RESTING;
         spr.setTexture(image);
         sprScaleX = sprScaleY = 1 / (hei / (Main.ME.scene.height * .03));
         this.stats = stats;

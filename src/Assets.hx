@@ -30,5 +30,7 @@ class Assets {
 		eric = hxd.Res.eric.toTexture();
 		james = hxd.Res.shim.toTexture();
 		background = hxd.Res.background.toTexture();
+
+		
 	}
 }

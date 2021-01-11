@@ -1,3 +1,4 @@
+import hxd.Res;
 import ui.FightText;
 import en.Character.CharacterState;
 
@@ -85,6 +86,22 @@ class Combat {
         setStates(RETURNING);
         att.cancelVelocities();
         def.cancelVelocities();
+        punchSfx();
+    }
+
+    function punchSfx() {
+        var x = Math.random();
+        if (x < .05) {
+            Res.sfx.bleat.play(.5);
+        }
+        var fxList = [
+            Res.sfx.punch0,
+            Res.sfx.punch1,
+            Res.sfx.punch2,
+            Res.sfx.punch3,
+            Res.sfx.slap,
+        ];
+        fxList[Std.int(x * fxList.length)].play();
     }
 
     public function fixedUpdate() {}

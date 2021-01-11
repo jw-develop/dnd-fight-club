@@ -1,3 +1,4 @@
+import hxd.Res;
 import ui.CharText;
 import ui.UpperText;
 import ui.FightText;
@@ -97,7 +98,10 @@ class Game extends Process {
 
 		upperText = new UpperText(root);
 		upperText.updateText();
-		c.init();
+		delayer.addS("before-start", () -> {
+			c.init();
+		}, 3);
+		Res.sfx.bleat.play(.5);
 	}
 
 	public function onCdbReload() {}

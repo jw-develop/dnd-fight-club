@@ -91,7 +91,7 @@ class Combat {
 
     function punchSfx() {
         var x = Math.random();
-        if (x < .05) {
+        if (x < .02) {
             Res.sfx.bleat.play(.5);
         }
         var fxList = [

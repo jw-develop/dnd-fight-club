@@ -123,9 +123,9 @@ class Combat {
 
     function startFight() {
         state = FIGHTING;
-        att.stats.initWins++;
         fightCount++;
         initiativeRoll();
+        att.stats.initWins++;
         for (c in chars) {
             c.stats.health = c.stats.maxHealth;
             c.state = CHARGING;

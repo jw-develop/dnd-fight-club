@@ -10,6 +10,8 @@ class Const {
 	static var _uniq = 0;
 	public static var NEXT_UNIQ(get,never) : Int; static inline function get_NEXT_UNIQ() return _uniq++;
 	public static var INFINITE = 999999;
+	public static var UI_BUTTON_HOVER_COLOR = 0x00FF00;
+	public static var BASE_GREEN = 0x00BB00;
 
 	static var _inc = 0;
 	public static var DP_BG = _inc++;

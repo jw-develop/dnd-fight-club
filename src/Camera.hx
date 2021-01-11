@@ -1,4 +1,7 @@
+import h2d.col.Bounds;
+
 class Camera extends dn.Process {
+	public static var ME: Camera;
 	public var target : Null<Entity>;
 	public var x : Float;
 	public var y : Float;
@@ -8,11 +11,15 @@ class Camera extends dn.Process {
 	public var hei(get,never) : Int;
 	var bumpOffX = 0.;
 	var bumpOffY = 0.;
+	var bounds: Bounds;
 
 	public function new() {
+		ME = this;
 		super(Game.ME);
 		x = y = 0;
 		dx = dy = 0;
+		bounds = new Bounds();
+		bounds.set(0, 0, Main.ME.scene.width, Main.ME.scene.height);
 	}
 
 	function get_wid() {
@@ -90,24 +97,7 @@ class Camera extends dn.Process {
 		super.postUpdate();
 
 		if( !ui.Console.ME.hasFlag("scroll") ) {
-			var level = Game.ME.level;
 			var scroller = Game.ME.scroller;
-
-			// Update scroller
-			if( wid<level.wid*Const.GRID)
-				scroller.x = -x + wid*0.5;
-			else
-				scroller.x = wid*0.5 - level.wid*0.5*Const.GRID;
-			if( hei<level.hei*Const.GRID)
-				scroller.y = -y + hei*0.5;
-			else
-				scroller.y = hei*0.5 - level.hei*0.5*Const.GRID;
-
-			// Clamp
-			if( wid<level.wid*Const.GRID)
-				scroller.x = M.fclamp(scroller.x, wid-level.wid*Const.GRID, 0);
-			if( hei<level.hei*Const.GRID)
-				scroller.y = M.fclamp(scroller.y, hei-level.hei*Const.GRID, 0);
 
 			// Bumps friction
 			bumpOffX *= Math.pow(0.75, tmod);

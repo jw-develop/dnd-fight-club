@@ -1,3 +1,6 @@
+import ui.CharText;
+import ui.UpperText;
+import ui.FightText;
 import dn.Process;
 import hxd.Key;
 
@@ -8,8 +11,16 @@ class Game extends Process {
 	public var fx : Fx;
 	public var camera : Camera;
 	public var scroller : h2d.Layers;
-	public var level : Level;
 	public var hud : ui.Hud;
+	public var f: Flow;
+
+	public var eric: Character;
+	public var james: Character;
+	public var fightText: FightText;
+	public var ericText: CharText;
+	public var jamesText: CharText;
+	public var fightsQueued: Int;
+	public var upperText: UpperText;
 
 	public function new() {
 		super(Main.ME);
@@ -24,22 +35,77 @@ class Game extends Process {
 		scroller.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
 		camera = new Camera();
-		level = new Level();
 		fx = new Fx();
 		hud = new ui.Hud();
 
+		f = new Flow(root);
+		f.fillWidth = true;
+		f.horizontalAlign = Middle;
+		f.horizontalSpacing = 600;
 		Process.resizeAll();
-		trace(Lang.t._("Game is ready."));
+
+		new Background();
+
+		var ericStats = {
+			name: "Andoril",
+			initiative: 3,
+			maxHealth: 25,
+			health: 25,
+			toHit: 5,
+			damage: () -> Std.int(Math.random() * 8) + 3,
+			armorClass: 16,
+			wins: 0,
+			hits: 0,
+			attempts: 0,
+			damageDealt: 0,
+			initWins: 0
+		}
+
+		var jamesStats = {
+			name: "Friedman",
+			initiative: 1,
+			maxHealth: 25,
+			health: 22,
+			toHit: 4,
+			damage: () -> Std.int(Math.random() * 6) + Std.int(Math.random() * 6) + 2,
+			armorClass: 16,
+			wins: 0,
+			hits: 0,
+			attempts: 0,
+			damageDealt: 0,
+			initWins: 0
+		}
+
+		var jamesC = [Main.ME.scene.width * .8, Main.ME.scene.height * .35];
+		var ericC = [Main.ME.scene.width * .2, Main.ME.scene.height * .35];
+		james = new Character(jamesC[0], jamesC[1], Assets.james, jamesStats);
+		eric = new Character(ericC[0], ericC[1], Assets.eric, ericStats);
+
+		var lowerFlow = new Flow(root);
+		lowerFlow.setPosition(0, Main.ME.scene.height * .55);
+		lowerFlow.minHeight = cast Main.ME.scene.height * .65;
+		lowerFlow.minWidth = Main.ME.scene.width;
+		lowerFlow.verticalAlign = Top;
+		lowerFlow.horizontalAlign = Middle;
+		
+		ericText = new CharText(lowerFlow, eric);
+		var c = new Combat([eric, james]);
+		fightText = new FightText(lowerFlow);
+		ericText.refresh();
+		jamesText = new CharText(lowerFlow, james);
+		jamesText.refresh();
+
+		upperText = new UpperText(root);
+		upperText.updateText();
+		c.init();
 	}
 
-	public function onCdbReload() {
-	}
+	public function onCdbReload() {}
 
 	override function onResize() {
 		super.onResize();
 		scroller.setScale(Const.SCALE);
 	}
-
 
 	function gc() {
 		if( Entity.GC==null || Entity.GC.length==0 )
@@ -75,12 +141,14 @@ class Game extends Process {
 	override function fixedUpdate() {
 		super.fixedUpdate();
 
+		Background.ME.fixedUpdate();
 		for(e in Entity.ALL) if( !e.destroyed ) e.fixedUpdate();
 	}
 
 	override function update() {
 		super.update();
 
+		Combat.ME.update();
 		for(e in Entity.ALL) if( !e.destroyed ) e.update();
 
 		if( !ui.Console.ME.isActive() && !ui.Modal.hasAny() ) {

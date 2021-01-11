@@ -5,10 +5,13 @@ class Main extends dn.Process {
 	public static var ME : Main;
 	public var controller : dn.heaps.Controller;
 	public var ca : dn.heaps.Controller.ControllerAccess;
+	public var scene: h2d.Scene;
 
 	public function new(s:h2d.Scene) {
 		super();
 		ME = this;
+
+		scene = s;
 
         createRoot(s);
 
@@ -54,11 +57,11 @@ class Main extends dn.Process {
 		controller.bind(X, Key.SPACE, Key.F, Key.E);
 		controller.bind(A, Key.UP, Key.Z, Key.W);
 		controller.bind(B, Key.ENTER, Key.NUMPAD_ENTER);
-		controller.bind(SELECT, Key.R);
+		// controller.bind(SELECT, Key.R);
 		controller.bind(START, Key.N);
 
 		// Start
-		new dn.heaps.GameFocusHelper(Boot.ME.s2d, Assets.fontMedium);
+		// new dn.heaps.GameFocusHelper(Boot.ME.s2d, Assets.fontMedium);
 		delayer.addF( startGame, 1 );
 	}
 
